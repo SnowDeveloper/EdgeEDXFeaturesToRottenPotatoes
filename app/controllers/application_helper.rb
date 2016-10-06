@@ -1,5 +1,5 @@
 module ApplicationHelper
-	def sorted_heading(column_name)
+	def sorted_head(column_name)
 		params[:sort] == column_name ? "hilite" : "" 
 	end
 end
