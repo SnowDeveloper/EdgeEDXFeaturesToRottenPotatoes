@@ -11,18 +11,29 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @sortAlphabetically = params[:sort] 
-    @ratings = params[:ratings]
+
+    redirect = false
+
+    @sortAlphabetically = params[:sort] ? params[:sort] : session[:sort] 
+    @ratings = params[:ratings] ? params[:ratings] : session[:ratings]
 
     @all_ratings = Movie.pluck(:rating).uniq
 
-    if params[:ratings].nil?
+    if (params[:sort] != @sort) || (params[:ratings] != @ratings)
+      redirect = true
+    end
+
+    if @ratings.nil?
       @ratings = {}
       @all_ratings.each{ |i| @ratings[i] = 1 }
     end
 
-    #@movies = Movie.order(@sortAlphabetically).all
+    redirect_to movies_path(sort: @sort, ratings: @ratings) if redirect
+
     @movies = Movie.where(:rating => @ratings.keys).order(@sortAlphabetically)
+
+    session[:sort] = @sort
+    session[:ratings] = @params
 
   end
 
