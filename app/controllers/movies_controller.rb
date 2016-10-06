@@ -19,7 +19,7 @@ class MoviesController < ApplicationController
 
     @all_ratings = Movie.pluck(:rating).uniq
 
-    if (params[:sort] != @sort) || (params[:ratings] != @ratings)
+    if (params[:sort] != @sortAlphabetically) || (params[:ratings] != @ratings)
       redirect = true
     end
 
@@ -28,12 +28,12 @@ class MoviesController < ApplicationController
       @all_ratings.each{ |i| @ratings[i] = 1 }
     end
 
-    redirect_to movies_path(sort: @sort, ratings: @ratings) if redirect
+    redirect_to movies_path(sort: @sortAlphabetically, ratings: @ratings) if redirect
 
     @movies = Movie.where(:rating => @ratings.keys).order(@sortAlphabetically)
 
-    session[:sort] = @sort
-    session[:ratings] = @params
+    session[:sort] = @sortAlphabetically
+    session[:ratings] = @ratings
 
   end
 
