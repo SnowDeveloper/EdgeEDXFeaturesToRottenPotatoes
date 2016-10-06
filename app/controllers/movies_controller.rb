@@ -21,8 +21,8 @@ class MoviesController < ApplicationController
       @all_ratings.each{ |i| @ratings[i] = 1 }
     end
 
-    @movies = Movie.order(@sortAlphabetically).all
-    @movies = Movie.where(:rating => @ratings.keys).all
+    #@movies = Movie.order(@sortAlphabetically).all
+    @movies = Movie.where(:rating => @ratings.keys).order(@sortAlphabetically)
 
   end
 
