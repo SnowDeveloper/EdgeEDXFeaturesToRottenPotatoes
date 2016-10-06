@@ -12,7 +12,20 @@ class MoviesController < ApplicationController
 
   def index
     @sortAlphabetically = params[:sort] 
+    @ratings = params[:ratings]
+
+    @all_ratings = Movie.pluck(:rating).uniq
+
+    if params[:ratings].nil?
+      @ratings = {}
+      @all_ratings.each{ |i| @ratings[i] = 1 }
+    end
+
+
+
     @movies = Movie.order(@sortAlphabetically).all
+    @movies = Movie.where(:rating => @ratings.keys).all
+
   end
 
   def new
